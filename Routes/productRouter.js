@@ -36,7 +36,7 @@ productRouter.route("/:productId")
     for(var i=0;i<data.length;i++){
         if(data[i]['product_code'] === req.params.productId){
             var temp = data[i];
-            detail.push({"status": 200,"data": temp})
+            detail.push({"status": res.statusCode,"data": temp})
             
         }
     }
@@ -48,7 +48,7 @@ productRouter.route("/:productId")
     }
     else{
         res.statusCode = 404
-        detail.push({"status": 404,"message": "Product is not found!"})
+        detail.push({"status": res.statusCode,"message": "Product is not found!"})
         res.setHeader('Content-Type', 'application/json');
         res.json(detail);
     }
