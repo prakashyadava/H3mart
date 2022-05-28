@@ -61,6 +61,17 @@ productRouter.route("/:productId")
             
         }
     }
+    const workSheet = reader.utils.json_to_sheet(data);
+    const workBook = reader.utils.book_new();
+
+    reader.utils.book_append_sheet(workBook, workSheet, "Sheet1")
+    // Generate buffer
+    reader.write(workBook, { bookType: 'xlsx', type: "buffer" })
+
+    // Binary string
+    reader.write(workBook, { bookType: "xlsx", type: "binary" })
+
+    reader.writeFile(workBook, "./uploads/product_list.xlsx")
     res.end(req.body.price + " price updated")
 })
 
