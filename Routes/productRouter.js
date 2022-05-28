@@ -16,15 +16,16 @@ productRouter.route("/")
     next();
 })
 .get((req, res, next) => {
-    const file = reader.readFile('./uploads/product_list.xlsx')
-    const sheets = file.SheetNames;
-
-    for (let i = 0; i < sheets.length; i++) {
-    const temp = reader.utils.sheet_to_json(file.Sheets[file.SheetNames[i]]);
+    
+    if(data.length==0){
+        let workbook = reader.readFile('./uploads/product_list.xlsx')
+    
+    const temp = reader.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
     temp.forEach((res) => {
         data.push(res);
     });
     }
+
 
     res.setHeader('Content-Type', 'application/json');
     res.json(data);
@@ -52,6 +53,15 @@ productRouter.route("/:productId")
         res.setHeader('Content-Type', 'application/json');
         res.json(detail);
     }
-});
+})
+.put((req,res,next)=>{
+    for(var i=0;i<data.length;i++){
+        if(data[i]['product_code'] === req.params.productId){
+            data[i]['price'] = req.body.price;
+            
+        }
+    }
+    res.end(req.body.price + " price updated")
+})
 
 module.exports = productRouter;
